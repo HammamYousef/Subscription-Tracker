@@ -1,17 +1,12 @@
 import { Router } from "express";
+import { getUser, getUsers } from "../controllers/user.controller.js";
+import authorize from "../middlewares/auth.middleware.js";
 
 const userRouter = Router();
 
-userRouter.get('/', (req, res) => {
-  // Handle fetching user profile logic here
-  res.status(200).json({ message: "User profile fetched successfully" });
-});
+userRouter.get('/', getUsers);
 
-userRouter.get('/:id', (req, res) => {
-    // Handle fetching a specific user by ID logic here
-    const userId = req.params.id;
-    res.status(200).json({ message: `User with ID ${userId} fetched successfully` });
-});
+userRouter.get('/:id', authorize, getUser);
 
 userRouter.post('/', (req, res) => {
     // Handle creating a new user profile logic here
