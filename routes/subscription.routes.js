@@ -1,4 +1,6 @@
 import { Router } from "express";
+import authorize from "../middlewares/auth.middleware.js";
+import { createSubscription, getUserSubscriptions } from "../controllers/subscription.controller.js";
 
 const subscriptionRouter = Router();
 
@@ -13,10 +15,7 @@ subscriptionRouter.get('/:id', (req, res) => {
   res.status(200).json({ message: `Subscription with ID ${subscriptionId} fetched successfully` });
 });
 
-subscriptionRouter.post('/', (req, res) => {
-  // Handle creating a new subscription logic here
-  res.status(201).json({ message: "Subscription created successfully" });
-});
+subscriptionRouter.post('/', authorize, createSubscription);
 
 subscriptionRouter.put('/:id', (req, res) => {
   // Handle updating a subscription logic here
@@ -30,11 +29,7 @@ subscriptionRouter.delete('/:id', (req, res) => {
   res.status(200).json({ message: `Subscription with ID ${subscriptionId} deleted successfully` });
 });
 
-subscriptionRouter.get('/user/:id', (req, res) => {
-  // Handle fetching subscriptions for a specific user logic here
-    const userId = req.params.id;
-    res.status(200).json({ message: `Subscriptions for user with ID ${userId} fetched successfully` });
-});
+subscriptionRouter.get('/user/:id', authorize, getUserSubscriptions);
 
 subscriptionRouter.put('/:id/cancel', (req, res) => {
   // Handle updating subscriptions for a specific user logic here
